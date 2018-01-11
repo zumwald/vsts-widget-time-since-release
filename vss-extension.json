@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "vsts-widget-time-since-release",
-  "version": "0.0.5",
+  "version": "0.1.9",
   "name":
     "Simple widget to place on a VSTS Dashboard to show how long it has been since your team released code.",
   "publisher": "danzumwalt",
@@ -15,7 +15,10 @@
     {
       "id": "vsts-widget-time-since-release",
       "type": "ms.vss-dashboards-web.widget",
-      "targets": ["ms.vss-dashboards-web.widget-catalog"],
+      "targets": [
+        "ms.vss-dashboards-web.widget-catalog",
+        "danzumwalt.vsts-widget-time-since-release.vsts-widget-time-since-release-configuration"
+      ],
       "properties": {
         "name": "Time Since Release",
         "description":
@@ -31,15 +34,34 @@
         ],
         "supportedScopes": ["project_team"]
       }
+    },
+    {
+      "id": "vsts-widget-time-since-release-configuration",
+      "type": "ms.vss-dashboards-web.widget-configuration",
+      "targets": ["ms.vss-dashboards-web.widget-configuration"],
+      "properties": {
+        "name": "Time Since Release Configuration",
+        "description": "Configures Time Since Release Widget",
+        "uri": "config.html"
+      }
     }
   ],
+  "scopes": ["vso.release"],
   "files": [
     {
       "path": "index.html",
       "addressable": true
     },
     {
-      "path": "bundle.js",
+      "path": "index.js",
+      "addressable": true
+    },
+    {
+      "path": "config.html",
+      "addressable": true
+    },
+    {
+      "path": "config.js",
       "addressable": true
     },
     {
