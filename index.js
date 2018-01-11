@@ -1,3 +1,5 @@
+/// <reference types="vss-web-extension-sdk" />
+
 // must require VSS sdk to add it to the dependency tree
 // and allow script-loader to work its magic
 require("vss-web-extension-sdk/lib/VSS.SDK.min.js");
@@ -8,6 +10,8 @@ VSS.init({
   explicitNotifyLoaded: true,
   usePlatformStyles: true
 });
+
+VSS;
 
 VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
   WidgetHelpers.IncludeWidgetStyles();
@@ -23,12 +27,14 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
       console.log("settings:", widgetSettings);
       let settings = JSON.parse(widgetSettings.customSettings.data);
       // validate settings
-      let releaseDefinitionId = settings.releaseDefinitionId;
-      let releaseEnvironmentId = settings.releaseEnvironmentId;
-      let measurmentUnit = settings.measurmentUnit;
-      let measurementSla = settings.measurementSla;
-      let measurementSlo = settings.measurementSlo;
-      let title = settings.title;
+      let releaseDefinitionId =
+        (settings && settings.releaseDefinitionId) || 42;
+      let releaseEnvironmentId =
+        (settings && settings.releaseEnvironmentId) || 110;
+      let measurmentUnit = (settings && settings.measurmentUnit) || "days";
+      let measurementSla = (settings && settings.measurementSla) || 14;
+      let measurementSlo = (settings && settings.measurementSlo) || 7;
+      let title = (settings && settings.title) || "foobar";
 
       if (
         !releaseDefinitionId ||
@@ -38,9 +44,7 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
         !measurementSlo ||
         !title
       ) {
-        //return WidgetHelpers.WidgetStatusHelper.Failure("Invalid Settings");
-        console.error("invalid settings");
-        return WidgetHelpers.WidgetStatusHelper.Success();
+        return WidgetHelpers.WidgetStatusHelper.Unconfigured();
       }
 
       let titleElement = $("h2.title");
@@ -54,7 +58,7 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
           releaseDefinitionId,
           releaseEnvironmentId
         )
-        .then(release => {
+        .then(r => {
           console.log("got release:", r);
           let lastReleaseTime = moment(r.createdOn);
           let now = moment();

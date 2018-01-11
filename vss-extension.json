@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "vsts-widget-time-since-release",
-  "version": "0.1.25",
+  "version": "0.2.0",
   "name":
     "Simple widget to place on a VSTS Dashboard to show how long it has been since your team released code.",
   "publisher": "danzumwalt",
