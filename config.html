@@ -4,51 +4,54 @@
 <head>
 </head>
 
-<div class="widget-configuration">
+<body>
+  <div class="widget-configuration">
 
-  <div class="single-line-text-input">
-    <label>Title</label>
-    <input id="title" type="text"></input>
-  </div>
-
-  <div class="dropdown">
-    <label>Release Definition</label>
-    <div class="wrapper">
-      <select id="release-definition-dropdown">
-      </select>
+    <div class="single-line-text-input">
+      <label>Title</label>
+      <input id="title" type="text"></input>
     </div>
-  </div>
 
-  <div class="dropdown">
-    <label>Release Definition</label>
-    <div class="wrapper">
-      <select id="release-environment-dropdown">
-      </select>
+    <div class="dropdown">
+      <label>Release Definition</label>
+      <div class="wrapper">
+        <select id="release-definition-dropdown">
+        </select>
+      </div>
     </div>
-  </div>
 
-  <fieldset class="radio" id="measurement-options-fieldset">
-    <legend>Measurement</legend>
-    <input name="measurement-options" type="radio" id="days" value="days" name="radio" checked="true">
-    <label for="days">days</label>
-    <br/>
-    <input name="measurement-options" type="radio" id="hours" value="hours" name="radio" checked="false">
-    <label for="hours">hours</label>
-    <br/>
-    <input name="measurement-options" type="radio" id="weeks" value="weeks" name="radio" checked="false">
-    <label for="weeks">weeks</label>
-    <br/>
-  </fieldset>
+    <div class="dropdown">
+      <label>Release Definition</label>
+      <div class="wrapper">
+        <select id="release-environment-dropdown">
+        </select>
+      </div>
+    </div>
 
-  <div class="single-line-text-input">
-    <label>Service Level Agreement</label>
-    <input id="measurementSla" type="number"></input>
-  </div>
+    <fieldset class="radio" id="measurement-options-fieldset">
+      <legend>Measurement Unit</legend>
+      <input name="measurement-options" type="radio" id="days" value="days" name="radio" checked="true">
+      <label for="days">days</label>
+      <br/>
+      <input name="measurement-options" type="radio" id="hours" value="hours" name="radio" checked="false">
+      <label for="hours">hours</label>
+      <br/>
+      <input name="measurement-options" type="radio" id="weeks" value="weeks" name="radio" checked="false">
+      <label for="weeks">weeks</label>
+      <br/>
+    </fieldset>
 
-  <div class="single-line-text-input">
-    <label>Service Level Objective</label>
-    <input id="measurementSlo" type="number"></input>
+    <div class="single-line-text-input">
+      <label>Service Level Agreement</label>
+      <input id="measurementla" type="number"></input>
+    </div>
+
+    <div class="single-line-text-input">
+      <label>Service Level Objective</label>
+      <input id="measurementSlo" type="number"></input>
+    </div>
+
   </div>
-</div>
+</body>
 
 </html>

@@ -19,64 +19,71 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
 
     let release = new Release(context);
 
-    return {
-      load: function(widgetSettings) {
-        // validate settings
-        let releaseDefinitionId = widgetSettings.releaseDefinitionId;
-        let releaseEnvironmentId = widgetSettings.releaseEnvironmentId;
-        let measurmentUnit = widgetSettings.measurmentUnit;
-        let measurementSla = widgetSettings.measurementSla;
-        let measurementSlo = widgetSettings.measurementSlo;
-        let title = widgetSettings.title;
+    function loadWidget(widgetSettings) {
+      console.log("settings:", widgetSettings);
+      let settings = JSON.parse(widgetSettings.customSettings.data);
+      // validate settings
+      let releaseDefinitionId = settings.releaseDefinitionId;
+      let releaseEnvironmentId = settings.releaseEnvironmentId;
+      let measurmentUnit = settings.measurmentUnit;
+      let measurementSla = settings.measurementSla;
+      let measurementSlo = settings.measurementSlo;
+      let title = settings.title;
 
-        if (
-          !releaseDefinitionId ||
-          !releaseEnvironmentId ||
-          !measurmentUnit ||
-          !measurementSla ||
-          !measurementSlo ||
-          !title
-        ) {
-          return WidgetHelpers.WidgetStatusHelper.Failure("Invalid Settings");
-        }
-
-        let titleElement = $("h2.title");
-        titleElement.text(title);
-
-        let labelElement = $("#label");
-        labelElement.text(`${measurmentUnit} since last release`);
-
-        release
-          .getLatestReleaseForEnvironment(
-            releaseDefinitionId,
-            releaseEnvironmentId
-          )
-          .then(release => {
-            console.log("got release:", r);
-            let lastReleaseTime = moment(r.createdOn);
-            let now = moment();
-
-            let difference = now.diff(lastReleaseTime, measurmentUnit);
-            let data = $("#data");
-            data.text(difference);
-
-            // color the widget according to the health
-            let cellColor = "red";
-            if (!difference || difference > measurementSla) {
-              // we're in trouble, not meeting SLA
-              cellColor = "red";
-            } else if (difference > measurementSlo) {
-              // we're not in emergency mode, but meeting SLO
-              cellColor = "yellow";
-            } else {
-              // we're meeting SLO
-              cellColor = "green";
-            }
-            $("body").css("background-color", cellColor);
-          });
-
+      if (
+        !releaseDefinitionId ||
+        !releaseEnvironmentId ||
+        !measurmentUnit ||
+        !measurementSla ||
+        !measurementSlo ||
+        !title
+      ) {
+        //return WidgetHelpers.WidgetStatusHelper.Failure("Invalid Settings");
+        console.error("invalid settings");
         return WidgetHelpers.WidgetStatusHelper.Success();
       }
+
+      let titleElement = $("h2.title");
+      titleElement.text(title);
+
+      let labelElement = $("#label");
+      labelElement.text(`${measurmentUnit} since last release`);
+
+      release
+        .getLatestReleaseForEnvironment(
+          releaseDefinitionId,
+          releaseEnvironmentId
+        )
+        .then(release => {
+          console.log("got release:", r);
+          let lastReleaseTime = moment(r.createdOn);
+          let now = moment();
+
+          let difference = now.diff(lastReleaseTime, measurmentUnit);
+          let data = $("#data");
+          data.text(difference);
+
+          // color the widget according to the health
+          let cellColor = "red";
+          if (!difference || difference > measurementSla) {
+            // we're in trouble, not meeting SLA
+            cellColor = "red";
+          } else if (difference > measurementSlo) {
+            // we're not in emergency mode, but meeting SLO
+            cellColor = "yellow";
+          } else {
+            // we're meeting SLO
+            cellColor = "green";
+          }
+          $("body").css("background-color", cellColor);
+        });
+
+      return WidgetHelpers.WidgetStatusHelper.Success();
+    }
+
+    return {
+      load: loadWidget,
+      reload: loadWidget
     };
   });
   VSS.notifyLoadSucceeded();

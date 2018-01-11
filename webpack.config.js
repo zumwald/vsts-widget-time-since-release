@@ -56,13 +56,11 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: join(__dirname, "index.html"),
-      inject: "head",
       chunks: ["index"],
       filename: "index.html"
     }),
     new HtmlWebpackPlugin({
       template: join(__dirname, "config.html"),
-      inject: "head",
       chunks: ["config"],
       filename: "config.html"
     }),
