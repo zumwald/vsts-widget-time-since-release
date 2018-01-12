@@ -11,8 +11,6 @@ VSS.init({
   usePlatformStyles: true
 });
 
-VSS;
-
 VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
   WidgetHelpers.IncludeWidgetStyles();
   VSS.register("vsts-widget-time-since-release", function() {
@@ -28,13 +26,14 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
       let settings = JSON.parse(widgetSettings.customSettings.data);
       // validate settings
       let releaseDefinitionId =
-        (settings && settings.releaseDefinitionId) || 42;
+        (settings && settings.releaseDefinitionId) || 1
       let releaseEnvironmentId =
-        (settings && settings.releaseEnvironmentId) || 110;
+        (settings && settings.releaseEnvironmentId) || 1;
       let measurmentUnit = (settings && settings.measurmentUnit) || "days";
       let measurementSla = (settings && settings.measurementSla) || 14;
       let measurementSlo = (settings && settings.measurementSlo) || 7;
-      let title = (settings && settings.title) || "foobar";
+      let title = (settings && settings.title) || "";
+      let sourceBranchFilter = (settings && settings.sourceBranchFilter) || "";
 
       if (
         !releaseDefinitionId ||
@@ -56,7 +55,8 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
       release
         .getLatestReleaseForEnvironment(
           releaseDefinitionId,
-          releaseEnvironmentId
+          releaseEnvironmentId,
+          sourceBranchFilter
         )
         .then(r => {
           console.log("got release:", r);
@@ -69,7 +69,7 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
 
           // color the widget according to the health
           let cellColor = "red";
-          if (!difference || difference > measurementSla) {
+          if (difference > measurementSla) {
             // we're in trouble, not meeting SLA
             cellColor = "red";
           } else if (difference > measurementSlo) {

@@ -12,7 +12,8 @@ let options = {
   measurmentUnit: "days",
   title: "",
   measurementSla: 14,
-  measurementSlo: 7
+  measurementSlo: 7,
+  sourceBranchFilter: ""
 };
 
 const emptyString = "";
@@ -40,13 +41,24 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
 
     return {
       load: function(widgetSettings, widgetConfigurationContext) {
-
-        function broadcastSettings(){
+        function broadcastSettings() {
           widgetConfigurationContext.notify(
             WidgetHelpers.WidgetEvent.ConfigurationChange,
             WidgetHelpers.WidgetEvent.Args(getCustomSettings())
           );
         }
+
+        // initialize pre-existing settings
+        let priorSettings = JSON.parse(widgetSettings.customSettings.data);
+        if (priorSettings) {
+          Object.getOwnPropertyNames(priorSettings).forEach(k => {
+            if (priorSettings[k]) {
+              options[k] = priorSettings[k];
+            }
+          });
+        }
+        console.log("existing settings were:", options);
+        broadcastSettings();
 
         function registerChangeHandler(
           elementToWatch,
@@ -61,7 +73,7 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
             console.log("set", optionKeyToSet, "to", value);
 
             // save the current WidgetConfigurationContext and broadcast the change
-            broadcastSettings()
+            broadcastSettings();
           });
         }
 
@@ -74,14 +86,17 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
           () => $("input[name=measurement-options]:checked").val()
         );
 
-        // register to changes to the title input
+        // register changes to the title input
         registerChangeHandler($("#title"), "title");
 
-        // register to changes to the measurementSla input
+        // register changes to the measurementSla input
         registerChangeHandler($("#measurementSla"), "measurementSla");
 
-        // register to changes to the measurementSlo input
+        // register changes to the measurementSlo input
         registerChangeHandler($("#measurementSlo"), "measurementSlo");
+
+        // register changes to the sourceBranchFilter string
+        registerChangeHandler($("#sourceBranchFilter"), "sourceBranchFilter");
 
         // we need to hydrate the release-definition-dropdown with the releases in our project
         release.getReleaseDefinitions().then(releaseDefinitions => {
@@ -125,7 +140,10 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
 
                 releaseEnvironmentSelector.append(markupToInsert);
 
-                registerChangeHandler(releaseEnvironmentSelector, "releaseEnvironmentId");
+                registerChangeHandler(
+                  releaseEnvironmentSelector,
+                  "releaseEnvironmentId"
+                );
               });
           });
         });
