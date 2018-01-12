@@ -77,6 +77,12 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
           });
         }
 
+        function initializeElement(element, setting) {
+          if (setting !== null && setting !== undefined) {
+            element.val(setting);
+          }
+        }
+
         let release = new Release(context);
 
         // register to changes to the measurement units radio selector
@@ -87,16 +93,27 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
         );
 
         // register changes to the title input
-        registerChangeHandler($("#title"), "title");
+        let titleElement = $("#title");
+        registerChangeHandler(titleElement, "title");
+        initializeElement(titleElement, options.title);
 
         // register changes to the measurementSla input
-        registerChangeHandler($("#measurementSla"), "measurementSla");
+        let measurementSlaElement = $("#measurementSla");
+        registerChangeHandler(measurementSlaElement, "measurementSla");
+        initializeElement(measurementSlaElement, options.measurementSla);
 
         // register changes to the measurementSlo input
-        registerChangeHandler($("#measurementSlo"), "measurementSlo");
+        let measurementSloElement = $("#measurementSlo");
+        registerChangeHandler(measurementSloElement, "measurementSlo");
+        initializeElement(measurementSloElement, options.measurementSlo);
 
         // register changes to the sourceBranchFilter string
-        registerChangeHandler($("#sourceBranchFilter"), "sourceBranchFilter");
+        let sourceBranchFilterElement = $("#sourceBranchFilter");
+        registerChangeHandler(sourceBranchFilterElement, "sourceBranchFilter");
+        initializeElement(
+          sourceBranchFilterElement,
+          options.sourceBranchFilter
+        );
 
         // we need to hydrate the release-definition-dropdown with the releases in our project
         release.getReleaseDefinitions().then(releaseDefinitions => {
