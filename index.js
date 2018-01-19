@@ -25,8 +25,7 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
       console.log("settings:", widgetSettings);
       let settings = JSON.parse(widgetSettings.customSettings.data);
       // validate settings
-      let releaseDefinitionId =
-        (settings && settings.releaseDefinitionId) || 1
+      let releaseDefinitionId = (settings && settings.releaseDefinitionId) || 1;
       let releaseEnvironmentId =
         (settings && settings.releaseEnvironmentId) || 1;
       let measurmentUnit = (settings && settings.measurmentUnit) || "days";
@@ -60,16 +59,31 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
         )
         .then(r => {
           console.log("got release:", r);
-          let lastReleaseTime = moment(r.createdOn);
-          let now = moment();
 
-          let difference = now.diff(lastReleaseTime, measurmentUnit);
+          const tryGetTimeSinceRelease = r => {
+            let result = null;
+
+            try {
+              let lastReleaseTime = moment(r.createdOn);
+              let now = moment();
+
+              result = now.diff(lastReleaseTime, measurmentUnit);
+            } catch (e) {
+              console.warn("Caught:", e);
+            }
+
+            return result;
+          };
+
+          let difference = tryGetTimeSinceRelease(r);
           let data = $("#data");
           data.text(difference);
 
           // color the widget according to the health
           let cellColor = "red";
-          if (difference > measurementSla) {
+          if (difference === null) {
+            cellColor = "grey";
+          } else if (difference > measurementSla) {
             // we're in trouble, not meeting SLA
             cellColor = "red";
           } else if (difference > measurementSlo) {
