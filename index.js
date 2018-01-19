@@ -64,7 +64,7 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
             let result = null;
 
             try {
-              let lastReleaseTime = moment(r.createdOn);
+              let lastReleaseTime = moment(r.modifiedOn);
               let now = moment();
 
               result = now.diff(lastReleaseTime, measurmentUnit);
