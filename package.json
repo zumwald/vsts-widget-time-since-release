@@ -1,7 +1,8 @@
 {
   "name": "vsts-widget-time-since-release",
   "version": "0.1.0-beta",
-  "description": "Simple widget to place on a VSTS Dashboard to show how long it has been since your team released code.",
+  "description":
+    "Simple widget to place on a VSTS Dashboard to show how long it has been since your team released code.",
   "main": "index.js",
   "repository": "https://github.com/zumwald/vsts-widget-time-since-release.git",
   "author": "Dan Zumwalt <daniel.zumwalt@outlook.com>",
@@ -14,12 +15,10 @@
     "precommit": "lint-staged",
     "prettier": "prettier --write *.{js,json,md}",
     "build": "webpack && cd ./dist && tfx extension create",
-    "watch": "yarn run build -- --watch"
+    "watch": "yarn run build --watch"
   },
   "lint-staged": {
-    "*.{js,json,md}": [
-      "prettier -l"
-    ]
+    "*.{js,json,md}": ["prettier -l"]
   },
   "dependencies": {
     "moment": "^2.20.1",

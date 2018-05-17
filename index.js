@@ -52,7 +52,7 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
       labelElement.text(`${measurmentUnit} since last release`);
 
       release
-        .getLatestReleaseForEnvironment(
+        .getLatestDeploymentForEnvironment(
           releaseDefinitionId,
           releaseEnvironmentId,
           sourceBranchFilter
@@ -64,7 +64,7 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
             let result = null;
 
             try {
-              let lastReleaseTime = moment(r.modifiedOn);
+              let lastReleaseTime = moment(r ? r.completedOn : 0);
               let now = moment();
 
               result = now.diff(lastReleaseTime, measurmentUnit);
