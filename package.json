@@ -15,6 +15,7 @@
     "precommit": "lint-staged",
     "prettier": "prettier --write *.{js,json,md}",
     "build": "webpack && cd ./dist && tfx extension create",
+    "publish": "webpack && cd ./dist && tfx extension publish",
     "watch": "yarn run build --watch"
   },
   "lint-staged": {

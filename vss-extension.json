@@ -1,10 +1,10 @@
 {
   "manifestVersion": 1,
   "id": "vsts-widget-time-since-release",
-  "version": "1.1.0",
+  "version": "1.1.9",
   "name":
     "Simple widget to place on a VSTS Dashboard to show how long it has been since your team released code.",
-  "publisher": "danzumwalt",
+  "publisher": "teamsengsys",
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services"
@@ -17,7 +17,7 @@
       "type": "ms.vss-dashboards-web.widget",
       "targets": [
         "ms.vss-dashboards-web.widget-catalog",
-        "danzumwalt.vsts-widget-time-since-release.vsts-widget-time-since-release-configuration"
+        "teamsengsys.vsts-widget-time-since-release.vsts-widget-time-since-release-configuration"
       ],
       "properties": {
         "name": "Time Since Release",

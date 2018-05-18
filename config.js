@@ -155,7 +155,7 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
                   .map(e => getOptionHtmlForEnvironment(e))
                   .join(emptyString);
 
-                releaseEnvironmentSelector.append(markupToInsert);
+                releaseEnvironmentSelector.html(markupToInsert);
 
                 registerChangeHandler(
                   releaseEnvironmentSelector,
