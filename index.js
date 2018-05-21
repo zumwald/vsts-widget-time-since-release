@@ -79,6 +79,21 @@ VSS.require("TFS/Dashboards/WidgetHelpers", function(WidgetHelpers) {
           let data = $("#data");
           data.text(difference);
 
+          try {
+            let releaseLink = r.release._links.web.href;
+            if (releaseLink) {
+              data.wrap(() => {
+                let link = $("<a/>");
+                link.attr("href", releaseLink);
+                link.attr("target", "_blank");
+                link.text($(this).text());
+                return link;
+              });
+            }
+          } catch (e) {
+            console.warn("Caught:", e);
+          }
+
           // color the widget according to the health
           let cellColor = "red";
           if (difference === null) {
